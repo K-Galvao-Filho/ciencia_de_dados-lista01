@@ -1,3 +1,5 @@
+##############################################################################################################
+##############################################################################################################
 print("#"*100)
 print("ATIVIDADE 1 - AQUISIÇÃO DE DADOS E LEITURA")
 print("#"*100)
@@ -30,7 +32,6 @@ dataframe = dataframe[["ORDERDATE", "PRODUCTLINE","QUANTITYORDERED", "PRICEEACH"
     columns={"ORDERDATE": "Data", "PRODUCTLINE":"Produto", "QUANTITYORDERED": "Quantidade", "PRICEEACH": "Preço"}
 )
 
-
 ##############################################################################################################
 # SOLICITADO 3: exibir as primeiras 5 linhas do DataFrame resultante.
 #
@@ -43,6 +44,7 @@ print("-"*50)
 print(dataframe.head())
 print("-"*50)
 
+##############################################################################################################
 ##############################################################################################################
 print("#"*100)
 print("ATIVIDADE 2 - PRÉ PROCESSAMENTO DE DADOS")
@@ -104,7 +106,6 @@ print("-"*50)
 print(dataframe.dtypes)
 print("-"*50)
 
-
 ##############################################################################################################
 # SOLICITADO 3: Normalize a coluna Quantidade para que os valores estejam entre 0 e 1.
 # RESOLUÇÃO:
@@ -139,6 +140,7 @@ print(dataframe.head())
 print("-"*50)
 
 ##############################################################################################################
+##############################################################################################################
 print("#"*100)
 print("ATIVIDADE 3 - ANÁLISE ESTATÍSTICA")
 print("#"*100)
@@ -166,6 +168,7 @@ print(f"Desvio Padrão: {desvio_padrao_preco}")
 print(f"Moda: {moda_preco}")
 print("-"*50)
 
+##############################################################################################################
 ##############################################################################################################
 print("#"*100)
 print("ATIVIDADE 4 - VISUALIZAÇÃO DE DADOS")
@@ -196,3 +199,28 @@ print("-"*50)
 print("Gráfico de barras mostrando a quantidade total vendida de cada produto:")
 print("-"*50)
 plt.show()
+
+##############################################################################################################
+##############################################################################################################
+print("#"*100)
+print("ATIVIDADE 5 - K-VIZINHOS MAIS PRÓXIMOS - CLASSIFICAÇÃO")
+print("#"*100)
+
+# SOLICITADO 1: Usando a mesma base de dados, crie uma coluna binária chamada Alta_Venda, onde o valor é 1 se a quantidade vendida for maior que a média e 0 caso contrário.
+# SOLICITADO 2: Em seguida, crie um modelo de classificação utilizando o algoritmo K-Vizinhos Mais Próximos (KNN) para prever se uma venda será alta ou não.
+# SOLICITADO 3: Avalie o modelo utilizando a matriz de confusão.
+
+# Importando a biblioteca pandas
+import pandas as pd
+# Importando a biblioteca numpy
+import numpy as np
+# Importando a biblioteca sklearn
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix
+
+# Definindo o caminho/nome do arquivo
+arquivo = "sales_data_sample.csv"
+
+# Lendo o arquivo csv
+dataframe = pd.read_csv(arquivo, encoding="Windows-1252")
