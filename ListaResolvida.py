@@ -137,3 +137,31 @@ print("DataFrame após as alterações:")
 print("-"*50)
 print(dataframe.head())
 print("-"*50)
+
+##############################################################################################################
+print("#"*100)
+print("ATIVIDADE 3 - ANÁLISE ESTATÍSTICA")
+print("#"*100)
+# SOLICITADO 1: Calcule a média, mediana, desvio padrão e moda para a coluna Preço do DataFrame resultante do pré-processamento.
+
+##############################################################################################################
+# SOLICITADO 1: Calcular a média, mediana, desvio padrão e moda para a coluna Preço.
+# RESOLUÇÃO:
+# Para calcular a média, vamos utilizar o comando mean() da biblioteca pandas.
+media_preco = dataframe["Preço"].mean()
+# Para calcular a mediana, vamos utilizar o comando median() da biblioteca pandas.
+mediana_preco = dataframe["Preço"].median()
+# Para calcular o desvio padrão, vamos utilizar o comando std() da biblioteca pandas.
+desvio_padrao_preco = dataframe["Preço"].std()
+# Para calcular a moda, vamos utilizar o comando mode() da biblioteca pandas.
+moda_preco = dataframe["Preço"].mode()[0]
+
+# Exibindo os resultados
+print("-"*50)
+print("Estatísticas da coluna Preço:")
+print("-"*50)
+print(f"Média: {media_preco}")
+print(f"Mediana: {mediana_preco}")
+print(f"Desvio Padrão: {desvio_padrao_preco}")
+print(f"Moda: {moda_preco}")
+print("-"*50)
