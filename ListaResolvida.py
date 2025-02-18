@@ -165,3 +165,34 @@ print(f"Mediana: {mediana_preco}")
 print(f"Desvio Padrão: {desvio_padrao_preco}")
 print(f"Moda: {moda_preco}")
 print("-"*50)
+
+##############################################################################################################
+print("#"*100)
+print("ATIVIDADE 4 - VISUALIZAÇÃO DE DADOS")
+print("#"*100)
+
+# SOLICITADO 1: Crie um gráfico de barras utilizando a biblioteca matplotlib que mostre a quantidade total vendida de cada produto. O eixo x deve representar os produtos e o eixo y a quantidade total vendida.
+# RESOLUÇÃO:
+# Para criar o gráfico de barras, vamos utilizar a biblioteca matplotlib.
+
+# Calculando a quantidade total vendida de cada produto
+quantidade_total_vendida = dataframe.groupby("Produto")["Quantidade"].sum()
+
+# Vamos estabelecer o tamanho da figura, para isso vamos utilizar o comando figure() da biblioteca matplotlib.
+plt.figure(figsize=(10, 6))
+
+# Agora vamos definir o gráfico de barras utilizando o comando plot() da biblioteca matplotlib.
+# como o solicitado foi um gráfico de barras, vamos utilizar o kind="bar"
+quantidade_total_vendida.plot(kind="bar")
+
+# Vamos adicionar o título e rótulos aos eixos
+plt.title("Quantidade Total Vendida de Cada Produto")
+plt.xlabel("Produto")
+plt.ylabel("Quantidade Total Vendida")
+
+# Agora vamos exibir.
+
+print("-"*50)
+print("Gráfico de barras mostrando a quantidade total vendida de cada produto:")
+print("-"*50)
+plt.show()
