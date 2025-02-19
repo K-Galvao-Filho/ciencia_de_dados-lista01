@@ -11,8 +11,13 @@ print("#"*100)
 # SOLICITADO 2: Utilize a biblioteca pandas para ler o arquivo.
 #
 # RESOLUÇÃO:
-# Importando a biblioteca pandas
+# Importando as bibliotecas necessárias para a resolução do exercício
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, classification_report
+import matplotlib.pyplot as plt
 
 # Definindo o caminho/nome do arquivo
 arquivo = "sales_data_sample.csv"
@@ -37,7 +42,6 @@ dataframe = dataframe[["ORDERDATE", "PRODUCTLINE","QUANTITYORDERED", "PRICEEACH"
 #
 # RESOLUÇÃO:
 # Para exibir as primeiras 5 linhas do DataFrame, utilizamos o comando head().
-
 print("-"*50)
 print("Primeiras 5 linhas do DataFrame:")
 print("-"*50)
@@ -52,25 +56,6 @@ print("#"*100)
 # SOLICITADO 1: Limpe os dados lidos no exercício anterior removendo linhas com valores nulos
 # SOLICITADO 2: Converta a coluna Data para o tipo datetime. 
 # SOLICITADO 3: Normalize a coluna Quantidade para que os valores estejam entre 0 e 1.
-
-# Importando a biblioteca pandas
-import pandas as pd
-# Para normalizar a coluna Quantidade, vamos utilizar o comando MinMaxScaler() da biblioteca sklearn.preprocessing
-from sklearn.preprocessing import MinMaxScaler
-
-# Importando a biblioteca matplotlib
-import matplotlib.pyplot as plt
-
-# Definindo o caminho/nome do arquivo
-arquivo = "sales_data_sample.csv"
-
-# Lendo o arquivo csv
-dataframe = pd.read_csv(arquivo, encoding="Windows-1252")
-
-# Selecionando as colunas solicitadas e renomeando-as
-dataframe = dataframe[["ORDERDATE", "PRODUCTLINE","QUANTITYORDERED", "PRICEEACH"]].rename(
-    columns={"ORDERDATE": "Data", "PRODUCTLINE":"Produto", "QUANTITYORDERED": "Quantidade", "PRICEEACH": "Preço"}
-)
 
 ##############################################################################################################
 # SOLICITADO 1: Limpe os dados lidos no exercício anterior removendo linhas com valores nulos
@@ -113,7 +98,7 @@ print("-"*50)
 print("-"*50)
 print("Valores da coluna Quantidade antes da normalização:")
 print("-"*50)
-print(dataframe["Quantidade"].head())
+print(dataframe["Quantidade"])
 print("-"*50)
 
 # Para normalizar a coluna Quantidade, vamos utilizar o comando MinMaxScaler() da biblioteca sklearn.preprocessing
@@ -129,14 +114,14 @@ dataframe["Quantidade"] = scaler.fit_transform(dataframe[["Quantidade"]])
 print("-"*50)
 print("Valores da coluna Quantidade após a normalização:")
 print("-"*50)
-print(dataframe["Quantidade"].head())
+print(dataframe["Quantidade"])
 print("-"*50)
 
 # Exibindo o DataFrame após as alterações
 print("-"*50)
 print("DataFrame após as alterações:")
 print("-"*50)
-print(dataframe.head())
+print(dataframe)
 print("-"*50)
 
 ##############################################################################################################
@@ -193,8 +178,7 @@ plt.title("Quantidade Total Vendida de Cada Produto")
 plt.xlabel("Produto")
 plt.ylabel("Quantidade Total Vendida")
 
-# Agora vamos exibir.
-
+# Exibindo o gráfico
 print("-"*50)
 print("Gráfico de barras mostrando a quantidade total vendida de cada produto:")
 print("-"*50)
@@ -210,17 +194,74 @@ print("#"*100)
 # SOLICITADO 2: Em seguida, crie um modelo de classificação utilizando o algoritmo K-Vizinhos Mais Próximos (KNN) para prever se uma venda será alta ou não.
 # SOLICITADO 3: Avalie o modelo utilizando a matriz de confusão.
 
-# Importando a biblioteca pandas
-import pandas as pd
-# Importando a biblioteca numpy
-import numpy as np
-# Importando a biblioteca sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import confusion_matrix
+# SOLICITADO 1: Crie uma coluna binária chamada Alta_Venda, onde o valor é 1 se a quantidade vendida for maior que a média e 0 caso contrário.
+#
+# RESOLUÇÃO:
+# Vamos urilizar calcular a média da Quantidade utilizando o comando .mean()
+media_quantidade = dataframe["Quantidade"].mean()
 
-# Definindo o caminho/nome do arquivo
-arquivo = "sales_data_sample.csv"
+# Vamos então criar a coluna Alta_Venda, onde o valor é 1 se a quantidade vendida for maior que a média e 0 caso contrário.
+# Para isso, vamos utilizar o comando .astype(int) para converter o resultado da comparação para inteiro.
+# Se a quantidade for maior que a média, o valor será 1, caso contrário, será 0.
+dataframe["Alta_Venda"] = (dataframe["Quantidade"] > media_quantidade).astype(int)
 
-# Lendo o arquivo csv
-dataframe = pd.read_csv(arquivo, encoding="Windows-1252")
+# Exibindo o DataFrame com a coluna Alta_Venda
+print("-"*50)
+print("DataFrame com a coluna Alta_Venda:")
+print("-"*50)
+print(dataframe)
+print("-"*50)
+
+# SOLICITADO 2: Crie um modelo de classificação utilizando o algoritmo K-Vizinhos Mais Próximos (KNN) para prever se uma venda será alta ou não.
+#
+# RESOLUÇÃO:
+# Definindo as variáveis independentes (X) e a variável dependente (y)
+X = dataframe[["Preço", "Quantidade"]]
+y = dataframe["Alta_Venda"]
+
+# Dividindo os dados em conjuntos de treino e teste
+# Vamos utilizar o comando train_test_split() da biblioteca sklearn.model_selection para dividir os dados.
+# O parâmetro test_size=0.2 indica que 20% dos dados serão utilizados para teste e 80% para treino.
+# O parâmetro random_state=42 é utilizado para garantir a reprodutibilidade dos resultados.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Criando o modelo KNN
+# foram testados diversos valores de n_neighbors, e foi identificado que o valor 5 foi o que obteve melhor acurácia sem necessidade de ajuste de hiperparametros
+knn = KNeighborsClassifier(n_neighbors=5)
+
+# Treinando o modelo
+knn.fit(X_train, y_train)
+
+# Fazendo previsões no conjunto de teste
+# Vamos utilizar o comando predict() para fazer previsões no conjunto de teste.
+y_pred = knn.predict(X_test)
+
+# Avaliando o modelo utilizando a matriz de confusão e o relatório de classificação
+print("-"*50)
+print("Matriz de Confusão:")
+print("-"*50)
+print(confusion_matrix(y_test, y_pred))
+print("-"*50)
+print("Relatório de Classificação:")
+print("-"*50)
+print(classification_report(y_test, y_pred))
+print("-"*50)
+
+# SOLICITADO 3: Avalie o modelo utilizando a matriz de confusão.
+#
+# RESOLUÇÃO:
+# A matriz de confusão é uma tabela que mostra as frequências de classificação para cada classe do modelo.
+# Ela é composta por quatro valores: verdadeiro positivo (TP), falso positivo (FP), verdadeiro negativo (TN) e falso negativo (FN).
+# A diagonal principal da matriz contém os valores corretamente classificados, enquanto os valores fora da diagonal principal são os incorretamente classificados.
+# A matriz de confusão é uma ferramenta útil para avaliar o desempenho de um modelo de classificação.
+# Vamos calcular a matriz de confusão para avaliar o modelo KNN.
+
+# Exibindo a matriz de confusão
+print("-"*50)
+print("Matriz de Confusão:")
+print("-"*50)
+print(confusion_matrix(y_test, y_pred))
+print("-"*50)
+
+##############################################################################################################
+
