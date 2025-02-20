@@ -3,7 +3,8 @@
 print("#"*100)
 print("ATIVIDADE 1 - AQUISIÇÃO DE DADOS E LEITURA")
 print("#"*100)
-# SOLICITADO 1: Escreva um script em Python que leia um arquivo CSV contendo dados de vendas de uma empresa. O arquivo deve conter as seguintes colunas: Data, Produto, Quantidade, Preço. 
+# SOLICITADO 1: Escreva um script em Python que leia um arquivo CSV contendo dados de vendas de uma empresa. 
+# O arquivo deve conter as seguintes colunas: Data, Produto, Quantidade, Preço. 
 # SOLICITADO 2: Utilize a biblioteca pandas para ler o arquivo 
 # SOLICITADO 3: exibir as primeiras 5 linhas do DataFrame resultante.
 
@@ -11,28 +12,30 @@ print("#"*100)
 # SOLICITADO 2: Utilize a biblioteca pandas para ler o arquivo.
 #
 # RESOLUÇÃO:
-# Importando as bibliotecas necessárias para a resolução do exercício
+# Importando as bibliotecas pandas e outras necessárias
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
 # Definindo o caminho/nome do arquivo
 arquivo = "sales_data_sample.csv"
 
-# Lendo o arquivo csv
-# Primeiro problema, o arquivo contem um probelema de encoding, então foi necessário identificar o encoding correto e então passar como parametro para o read_csv.
+# Lendo o arquivo CSV com os dados de vendas da empresa.
+# Tivemos um pequeno problema ao abrir o arquivo, o mesmo estava com uma codificação diferente, sendo assim foi necessário 
+# adicionar o encoding="Windows-1252" para que o arquivo fosse aberto corretamente.
 dataframe = pd.read_csv(arquivo, encoding="Windows-1252")
 
 ##############################################################################################################
 # SOLICITADO 1: O arquivo deve conter as seguintes colunas: "Data, Produto, Quantidade, Preço".
 #
 # RESOLUÇÃO:
-# Vamos então selecionando as colunas relevantes e renomeando
-# Segundo problema, o arquivo não contem exatammente todas as colunas solicitaddas, sendo assim, foi necessário selecionar apenas as colunas solicitadas.
-# PRODUTO não estava especificado no arquivo, então foi utilizado a coluna "PRODUCTLINE" como sendo a mais próxima.
+# Buscamos selecionar as colunas solicitadas, porém, tivemos novos problemas:
+# O arquivo não contem exatammente todas as colunas solicitaddas, sendo assim, foi necessário selecionar apenas as colunas 
+# solicitadas. PRODUTO não estava especificado no arquivo, então foi utilizado a coluna "PRODUCTLINE" como sendo a mais próxima.
 dataframe = dataframe[["ORDERDATE", "PRODUCTLINE","QUANTITYORDERED", "PRICEEACH"]].rename(
     columns={"ORDERDATE": "Data", "PRODUCTLINE":"Produto", "QUANTITYORDERED": "Quantidade", "PRICEEACH": "Preço"}
 )
@@ -59,8 +62,10 @@ print("#"*100)
 
 ##############################################################################################################
 # SOLICITADO 1: Limpe os dados lidos no exercício anterior removendo linhas com valores nulos
+#
 # RESOLUÇÃO:
-# Para remover valores nulos, vamos verificar se existem valores nulos no DataFrame utilizando o comando isnull().sum() emm todas as colunas.
+# Para remover valores nulos, vamos verificar se existem valores nulos no DataFrame utilizando o comando isnull().sum() 
+# emm todas as colunas.
 print("-"*50)
 print("Total de valores nulos por coluna:")
 print("-"*50)
@@ -68,11 +73,13 @@ print(dataframe.isnull().sum())
 print("-"*50)
 
 #Apos a verificação, podemos identificar que não existem valores nulos no DataFrame.
-#Mais para fins de aprendizado, vamos executar o comando para remover valores nulos mesmo assim utilizando o comando dropna().
+#Mais para fins de aprendizado, vamos executar mesmo assim o comando para remover valores nulos mesmo assim utilizando 
+# o comando dropna().
 dataframe = dataframe.dropna()
 
 ##############################################################################################################
 # SOLICITADO 2: Convertendo a coluna Data para o tipo datetime
+#
 # RESOLUÇÃO:
 # Vamos verificar o tipo de dados da coluna Data antes da conversão.
 print("-"*50)
@@ -93,6 +100,7 @@ print("-"*50)
 
 ##############################################################################################################
 # SOLICITADO 3: Normalize a coluna Quantidade para que os valores estejam entre 0 e 1.
+#
 # RESOLUÇÃO:
 # Vamos verificar os valores da coluna Quantidade antes da normalização.
 print("-"*50)
@@ -129,10 +137,11 @@ print("-"*50)
 print("#"*100)
 print("ATIVIDADE 3 - ANÁLISE ESTATÍSTICA")
 print("#"*100)
-# SOLICITADO 1: Calcule a média, mediana, desvio padrão e moda para a coluna Preço do DataFrame resultante do pré-processamento.
+# SOLICITADO: Calcule a média, mediana, desvio padrão e moda para a coluna Preço do DataFrame resultante do pré-processamento.
 
 ##############################################################################################################
-# SOLICITADO 1: Calcular a média, mediana, desvio padrão e moda para a coluna Preço.
+# SOLICITADO: Calcular a média, mediana, desvio padrão e moda para a coluna Preço.
+#
 # RESOLUÇÃO:
 # Para calcular a média, vamos utilizar o comando mean() da biblioteca pandas.
 media_preco = dataframe["Preço"].mean()
@@ -159,7 +168,10 @@ print("#"*100)
 print("ATIVIDADE 4 - VISUALIZAÇÃO DE DADOS")
 print("#"*100)
 
-# SOLICITADO 1: Crie um gráfico de barras utilizando a biblioteca matplotlib que mostre a quantidade total vendida de cada produto. O eixo x deve representar os produtos e o eixo y a quantidade total vendida.
+##############################################################################################################
+# SOLICITADO 1: Crie um gráfico de barras utilizando a biblioteca matplotlib que mostre a quantidade total vendida de cada produto. 
+# O eixo x deve representar os produtos e o eixo y a quantidade total vendida.
+#
 # RESOLUÇÃO:
 # Para criar o gráfico de barras, vamos utilizar a biblioteca matplotlib.
 
@@ -194,6 +206,7 @@ print("#"*100)
 # SOLICITADO 2: Em seguida, crie um modelo de classificação utilizando o algoritmo K-Vizinhos Mais Próximos (KNN) para prever se uma venda será alta ou não.
 # SOLICITADO 3: Avalie o modelo utilizando a matriz de confusão.
 
+##############################################################################################################
 # SOLICITADO 1: Crie uma coluna binária chamada Alta_Venda, onde o valor é 1 se a quantidade vendida for maior que a média e 0 caso contrário.
 #
 # RESOLUÇÃO:
@@ -212,6 +225,7 @@ print("-"*50)
 print(dataframe)
 print("-"*50)
 
+##############################################################################################################
 # SOLICITADO 2: Crie um modelo de classificação utilizando o algoritmo K-Vizinhos Mais Próximos (KNN) para prever se uma venda será alta ou não.
 #
 # RESOLUÇÃO:
@@ -220,13 +234,15 @@ X = dataframe[["Preço", "Quantidade"]]
 y = dataframe["Alta_Venda"]
 
 # Dividindo os dados em conjuntos de treino e teste
-# Vamos utilizar o comando train_test_split() da biblioteca sklearn.model_selection para dividir os dados.
 # O parâmetro test_size=0.2 indica que 20% dos dados serão utilizados para teste e 80% para treino.
 # O parâmetro random_state=42 é utilizado para garantir a reprodutibilidade dos resultados.
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Criando o modelo KNN
 # foram testados diversos valores de n_neighbors, e foi identificado que o valor 5 foi o que obteve melhor acurácia sem necessidade de ajuste de hiperparametros
+# no caso de parametros como 1 e 3, a acurácia foi maior, porem o modelo pode estar sofrendo de overfitting.
+# no caso de parametros como 7 e 9, a acurácia foi menor, porem o modelo pode estar sofrendo de underfitting.
+# o valor 5 foi o que obteve melhor acurácia sem necessidade de ajuste de hiperparametros
 knn = KNeighborsClassifier(n_neighbors=5)
 
 # Treinando o modelo
@@ -236,32 +252,88 @@ knn.fit(X_train, y_train)
 # Vamos utilizar o comando predict() para fazer previsões no conjunto de teste.
 y_pred = knn.predict(X_test)
 
+
+##############################################################################################################
+# SOLICITADO 3: Avalie o modelo utilizando a matriz de confusão.
+#
+# RESOLUÇÃO:
+# A matriz de confusão representa o desempenho do modelo de classificação.
+# Vamos utilizar a matriz de confusão para avaliar o modelo.
+# Para isso, vamos utilizar a biblioteca sklearn.metrics e o comando confusion_matrix().
+
 # Avaliando o modelo utilizando a matriz de confusão e o relatório de classificação
 print("-"*50)
 print("Matriz de Confusão:")
 print("-"*50)
 print(confusion_matrix(y_test, y_pred))
 print("-"*50)
+
+# O relatório de classificação exibe métricas como precisão, recall, f1-score e suporte.
+# Vamos utilizar o comando classification_report() para exibir o relatório de classificação.
+print("-"*50)
 print("Relatório de Classificação:")
 print("-"*50)
 print(classification_report(y_test, y_pred))
 print("-"*50)
 
-# SOLICITADO 3: Avalie o modelo utilizando a matriz de confusão.
-#
-# RESOLUÇÃO:
-# A matriz de confusão é uma tabela que mostra as frequências de classificação para cada classe do modelo.
-# Ela é composta por quatro valores: verdadeiro positivo (TP), falso positivo (FP), verdadeiro negativo (TN) e falso negativo (FN).
-# A diagonal principal da matriz contém os valores corretamente classificados, enquanto os valores fora da diagonal principal são os incorretamente classificados.
-# A matriz de confusão é uma ferramenta útil para avaliar o desempenho de um modelo de classificação.
-# Vamos calcular a matriz de confusão para avaliar o modelo KNN.
-
-# Exibindo a matriz de confusão
+# A acurácia é uma métrica que representa a proporção de previsões corretas do modelo.
+# Vamos utilizar o comando accuracy_score() para calcular a acurácia do modelo.
 print("-"*50)
-print("Matriz de Confusão:")
+print("Acurácia:")
 print("-"*50)
-print(confusion_matrix(y_test, y_pred))
+print(accuracy_score(y_test, y_pred))
 print("-"*50)
 
 ##############################################################################################################
+# ATIVIDADE 6: Agrupamento - K-means
+# SOLICITADO 1: Utilize o algoritmo K-means para agrupar os produtos com base em suas quantidades vendidas e preços.
+# SOLICITADO 2: Determine o número ideal de clusters utilizando o método do cotovelo (elbow method).
+##############################################################################################################
+print("#"*100)
+print("ATIVIDADE 6 - AGRUPAMENTO - K-MEANS")
+print("#"*100)
 
+# SOLICITADO: Utilize o algoritmo K-means para agrupar os produtos com base em suas quantidades vendidas e preços.
+# Determine o número ideal de clusters utilizando o método do cotovelo (elbow method).
+
+# Importando a biblioteca necessária para o K-means
+
+# Definindo os dados para o agrupamento
+dados = dataframe[["Quantidade", "Preço"]]
+
+# Determinando o número ideal de clusters utilizando o método do cotovelo
+wcss = []
+for i in range(1, 11):
+    kmeans = KMeans(n_clusters=i, init='k-means++', max_iter=300, n_init=10, random_state=42)
+    kmeans.fit(dados)
+    wcss.append(kmeans.inertia_)
+
+# Plotando o gráfico do método do cotovelo
+plt.figure(figsize=(10, 6))
+plt.plot(range(1, 11), wcss, marker='o')
+plt.title('Método do Cotovelo (Elbow Method)')
+plt.xlabel('Número de Clusters')
+plt.ylabel('WCSS')
+plt.show()
+
+# A partir do gráfico, escolhemos o número ideal de clusters (por exemplo, 3)
+numero_clusters = 3
+
+# Aplicando o K-means com o número ideal de clusters
+kmeans = KMeans(n_clusters=numero_clusters, init='k-means++', max_iter=300, n_init=10, random_state=42)
+dataframe['Cluster'] = kmeans.fit_predict(dados)
+
+# Exibindo o DataFrame com os clusters
+print("-"*50)
+print("DataFrame com os Clusters:")
+print("-"*50)
+print(dataframe)
+print("-"*50)
+
+# Plotando os clusters
+plt.figure(figsize=(10, 6))
+plt.scatter(dataframe['Quantidade'], dataframe['Preço'], c=dataframe['Cluster'], cmap='viridis')
+plt.title('Agrupamento de Produtos')
+plt.xlabel('Quantidade')
+plt.ylabel('Preço')
+plt.show()
