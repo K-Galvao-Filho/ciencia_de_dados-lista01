@@ -370,9 +370,9 @@ produtos_por_cluster = dados_vendas.groupby("Cluster")["Produto"].apply(list)
 print("-"*50)
 print("Com os dados, podemos identificar possíveis possiveis razões para os Agrupamentos:")
 print("-"*50)
-print("Cluster 0: Esses produtos são luxuosos, mas não tão caros quanto os mais exclusivos. São comprados por colecionadores ou quem tem um hobby, então não são compras frequentes, mas quando acontecem, têm um preço alto.")
-print("Cluster 1: Esses produtos, são de luxo e têm preços altos. São comprados esporadicamente por um público restrito, o que justifica o preço elevado e as vendas limitadas.")
-print("Cluster 2: Esses produtos, têm preços mais baixos e atraem mais pessoas. A variação de preço é pequena, pois o objetivo é ser acessível. Mesmo com preços baixos, a demanda é constante, pois muitas pessoas procuram opções de transporte mais baratas.")
+print("Cluster 0: Produtos mais baratos, com preços médios de 47.79. São produtos acessíveis, possivelmente itens de uso comum ou de entrada no mercado. A demanda pode ser moderada, já que há uma variação de preços, mas ainda assim, são produtos comprados regularmente.")
+print("Cluster 1: Produtos mais caros, com preços médios de 98.28. São itens de luxo, adquiridos por um público mais seleto. As compras são esporádicas e o mercado é mais restrito, justificando os preços elevados e as menores quantidades vendidas.")
+print("Cluster 2: Produtos de preço intermediário, com média de 72.66. Atraem uma ampla base de consumidores e têm um equilíbrio entre acessibilidade e exclusividade. A variação de preço não é tão grande, e esses produtos tendem a ter uma demanda constante, sendo uma escolha frequente para muitas pessoas.")
 print("-"*50)
 
 
